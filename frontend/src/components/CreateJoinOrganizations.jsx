@@ -1,26 +1,32 @@
 import React, { useState } from "react";
 import {
   Button,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
   Grid,
   List,
   ListItem,
   ListItemText,
-  ListItemSecondaryAction,
-  IconButton,
   Typography,
   makeStyles,
   TextField
 } from "@material-ui/core";
-import DeleteIcon from "@material-ui/icons/Delete";
 import { useDispatch, useSelector } from "react-redux";
-import { postOrganization } from "../ducks/actions/Api";
+import { setEditId } from "../ducks/actions/Actions";
+import { postOrganization, putOrganization } from "../ducks/actions/Api";
 
 const useStyles = makeStyles(theme => ({
   mainHomeContainer: {
     marginTop: theme.spacing(6)
   },
-  createButton: {
+  button: {
     color: "#fff"
+  },
+  editJoinButton: {
+    color: "#fff",
+    margin: theme.spacing(1)
   },
   gridContainer: {
     marginTop: theme.spacing(4)
@@ -41,6 +47,9 @@ export default function CreateJoinOrganizations() {
   const classes = useStyles();
   const dispatch = useDispatch();
   const organizations = useSelector(state => state.organization);
+  let organizationId = useSelector(state => state.editOrganizationId);
+
+  const [open, setOpen] = React.useState(false);
 
   const useInput = initialValue => {
     const [value, setValue] = useState(initialValue);
@@ -68,11 +77,38 @@ export default function CreateJoinOrganizations() {
     bind: bindHourlyRate,
     reset: resetHourlyRate
   } = useInput("");
+  const {
+    value: editOrganizationName,
+    bind: bindEditOrganizationName,
+    reset: resetEditOrganizationName
+  } = useInput("");
+  const {
+    value: editHourlyRate,
+    bind: bindEditHourlyRate,
+    reset: resetEditHourlyRate
+  } = useInput("");
+
+  const handleEdit = orgId => {
+    dispatch(setEditId(orgId));
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    resetEditOrganizationName();
+    resetEditHourlyRate();
+    setOpen(false);
+  };
 
   const handleSubmit = evt => {
     evt.preventDefault();
     resetOrganizationName();
     resetHourlyRate();
+  };
+
+  const handleEditSubmit = evt => {
+    evt.preventDefault();
+    resetEditOrganizationName();
+    resetEditHourlyRate();
   };
 
   return (
@@ -89,11 +125,22 @@ export default function CreateJoinOrganizations() {
               {organizations.map(item => (
                 <ListItem key={item.id}>
                   <ListItemText primary={item.name} />
-                  <ListItemSecondaryAction>
-                    <IconButton edge="end" aria-label="delete">
-                      <DeleteIcon />
-                    </IconButton>
-                  </ListItemSecondaryAction>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.editJoinButton}
+                    onClick={() => handleEdit(item.id)}
+                  >
+                    Edit
+                  </Button>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className={classes.editJoinButton}
+                    onClick={() => dispatch()}
+                  >
+                    Join
+                  </Button>
                 </ListItem>
               ))}
             </List>
@@ -122,7 +169,6 @@ export default function CreateJoinOrganizations() {
                 fullWidth
                 name="rate"
                 label="Hourly Rate"
-                type="rate"
                 id="rate"
                 {...bindHourlyRate}
               />
@@ -131,7 +177,7 @@ export default function CreateJoinOrganizations() {
                 variant="contained"
                 color="primary"
                 fullWidth
-                className={classes.createButton}
+                className={classes.button}
                 onClick={() =>
                   dispatch(postOrganization(organizationName, hourlyRate))
                 }
@@ -142,6 +188,51 @@ export default function CreateJoinOrganizations() {
           </div>
         </Grid>
       </Grid>
+      <Dialog
+        open={open}
+        onClose={handleClose}
+        aria-labelledby="form-dialog-title"
+      >
+        <DialogTitle id="form-dialog-title">Edit Organization</DialogTitle>
+        <form className={classes.form} noValidate onSubmit={handleEditSubmit}>
+          <DialogContent>
+            <TextField
+              margin="dense"
+              id="editOrganizationName"
+              label="New Organization Name"
+              fullWidth
+              {...bindEditOrganizationName}
+            />
+            <TextField
+              margin="dense"
+              id="editHourlyRate"
+              label="New Hourly Rate"
+              fullWidth
+              {...bindEditHourlyRate}
+            />
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleClose} color="primary">
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              onClick={() =>
+                dispatch(
+                  putOrganization(
+                    editOrganizationName,
+                    editHourlyRate,
+                    organizationId
+                  )
+                ).then(handleClose)
+              }
+              color="primary"
+            >
+              Submit
+            </Button>
+          </DialogActions>
+        </form>
+      </Dialog>
     </div>
   );
 }

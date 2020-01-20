@@ -6,7 +6,10 @@ import {
   GET_USER_INFO_SUCCESS,
   REGISTER_SUCCESS,
   POST_ORGANIZATION_SUCCESS,
-  POST_ORGANIZATION_FAILED
+  POST_ORGANIZATION_FAILED,
+  PUT_ORGANIZATION_SUCCESS,
+  PUT_ORGANIZATION_FAILED,
+  SET_EDIT_ID
 } from "./Types";
 
 export const getOrganizationsSuccess = response => {
@@ -49,9 +52,21 @@ export const postOrganizationFailed = () => {
   return { type: POST_ORGANIZATION_FAILED };
 };
 
+export const putOrganizationSuccess = () => {
+  return { type: PUT_ORGANIZATION_SUCCESS };
+};
+
+export const putOrganizationFailed = () => {
+  return { type: PUT_ORGANIZATION_FAILED };
+};
+
 export const getUserInfoSuccess = response => {
   return {
     type: GET_USER_INFO_SUCCESS,
     payload: response
   };
+};
+
+export const setEditId = organizationId => {
+  return { type: SET_EDIT_ID, payload: organizationId };
 };

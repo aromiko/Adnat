@@ -6,7 +6,9 @@ import {
   getUserInfoSuccess,
   postOrganizationSuccess,
   postOrganizationFailed,
-  registerSuccess
+  registerSuccess,
+  putOrganizationSuccess,
+  putOrganizationFailed
 } from "./Actions";
 import store from "../Store";
 import axios from "axios";
@@ -103,6 +105,30 @@ export const postOrganization = (name, hourlyRate) => {
       })
       .catch(error => {
         dispatch(postOrganizationFailed());
+        throw error;
+      });
+  };
+};
+
+export const putOrganization = (name, hourlyRate, id) => {
+  return dispatch => {
+    return axios
+      .put(
+        `${apiUrl}/organisations/${id}`,
+        { name, hourlyRate },
+        {
+          headers: {
+            Authorization: state.auth.sessionId,
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      .then(() => {
+        dispatch(putOrganizationSuccess());
+        dispatch(getOrganizations());
+      })
+      .catch(error => {
+        dispatch(putOrganizationFailed());
         throw error;
       });
   };
