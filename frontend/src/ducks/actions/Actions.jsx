@@ -1,23 +1,18 @@
 import {
+  DATA_LOADED,
   GET_ORGANIZATIONS_SUCCESS,
+  GET_USER_INFO_SUCCESS,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
   LOGOUT_SUCCESS,
-  GET_USER_INFO_SUCCESS,
   REGISTER_SUCCESS,
   POST_ORGANIZATION_SUCCESS,
   POST_ORGANIZATION_FAILED,
+  POST_LEAVE_ORGANIZATION_SUCCESS,
   PUT_ORGANIZATION_SUCCESS,
   PUT_ORGANIZATION_FAILED,
   SET_EDIT_ID
 } from "./Types";
-
-export const getOrganizationsSuccess = response => {
-  return {
-    type: GET_ORGANIZATIONS_SUCCESS,
-    payload: response
-  };
-};
 
 export const loginSuccess = (sessionId, isLogged) => {
   return {
@@ -60,6 +55,13 @@ export const putOrganizationFailed = () => {
   return { type: PUT_ORGANIZATION_FAILED };
 };
 
+export const getOrganizationsSuccess = response => {
+  return {
+    type: GET_ORGANIZATIONS_SUCCESS,
+    payload: response
+  };
+};
+
 export const getUserInfoSuccess = response => {
   return {
     type: GET_USER_INFO_SUCCESS,
@@ -69,4 +71,12 @@ export const getUserInfoSuccess = response => {
 
 export const setEditId = organizationId => {
   return { type: SET_EDIT_ID, payload: organizationId };
+};
+
+export const dataLoaded = loaded => {
+  return { type: DATA_LOADED, payload: loaded };
+};
+
+export const leaveOrganization = () => {
+  return { type: POST_LEAVE_ORGANIZATION_SUCCESS };
 };

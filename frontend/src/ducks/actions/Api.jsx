@@ -1,5 +1,7 @@
 import {
+  dataLoaded,
   getOrganizationsSuccess,
+  leaveOrganization,
   loginSuccess,
   loginFailed,
   logoutSuccess,
@@ -12,7 +14,7 @@ import {
 } from "./Actions";
 import store from "../Store";
 import axios from "axios";
-import { history } from "../History";
+import { history } from "../helpers/History";
 
 let state = [];
 store.subscribe(() => {
@@ -27,7 +29,10 @@ export const login = (email, password) => {
       .post(`${apiUrl}/auth/login`, { email, password })
       .then(response => {
         dispatch(loginSuccess(response.data.sessionId, true));
+        dispatch(getOrganizations());
         dispatch(getUserInfo());
+      })
+      .then(() => {
         history.push("./home");
       })
       .catch(error => {
@@ -99,7 +104,6 @@ export const postOrganization = (name, hourlyRate) => {
         }
       )
       .then(() => {
-        dispatch(postOrganizationSuccess(true));
         dispatch(getOrganizations());
         dispatch(getUserInfo());
       })
@@ -148,7 +152,29 @@ export const postJoinOrganization = organisationId => {
         }
       )
       .then(() => {
-        dispatch(postOrganizationSuccess(true));
+        dispatch(getUserInfo());
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+};
+
+export const postLeaveOrganization = () => {
+  return dispatch => {
+    return axios
+      .post(
+        `${apiUrl}/organisations/leave`,
+        {},
+        {
+          headers: {
+            Authorization: state.auth.sessionId,
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      .then(() => {
+        dispatch(leaveOrganization());
         dispatch(getUserInfo());
       })
       .catch(error => {
@@ -186,10 +212,13 @@ export const getUserInfo = () => {
       })
       .then(response => {
         dispatch(getUserInfoSuccess(response.data));
-        dispatch(postOrganizationSuccess(true));
-        if (!response.data.organisationId) {
-          dispatch(postOrganizationSuccess(false));
+        if (response.data.organisationId) {
+          dispatch(postOrganizationSuccess(true));
+          dispatch(dataLoaded(true));
+        } else {
           dispatch(getOrganizations());
+          dispatch(postOrganizationSuccess(false));
+          dispatch(dataLoaded(true));
         }
       })
       .catch(error => {

@@ -13,6 +13,7 @@ const useStyles = makeStyles(theme => ({
 export default function Home() {
   const classes = useStyles();
   const userName = useSelector(state => state.userInfo.name);
+  const dataLoaded = useSelector(state => state.isDataLoaded);
   return (
     <div>
       <Header></Header>
@@ -20,7 +21,7 @@ export default function Home() {
         <Typography variant="h2" gutterBottom>
           Welcome {userName}!
         </Typography>
-        <Organizations />
+        {dataLoaded ? <Organizations /> : ""}
       </Container>
     </div>
   );

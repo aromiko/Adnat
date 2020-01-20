@@ -2,6 +2,7 @@ import {
   GET_ORGANIZATIONS_SUCCESS,
   GET_ORGANIZATIONS_FAILED,
   POST_ORGANIZATION_SUCCESS,
+  POST_LEAVE_ORGANIZATION_SUCCESS,
   LOGOUT_SUCCESS,
   SET_EDIT_ID
 } from "../actions/Types";
@@ -33,6 +34,10 @@ export const inOrganizationReducer = (
   switch (action.type) {
     case POST_ORGANIZATION_SUCCESS:
       return (state = action.payload);
+    case POST_LEAVE_ORGANIZATION_SUCCESS:
+      return (state = initialInOrganizationState);
+    case LOGOUT_SUCCESS:
+      return (state = initialInOrganizationState);
     default:
       return state;
   }

@@ -1,10 +1,14 @@
-import { GET_USER_INFO_SUCCESS, LOGOUT_SUCCESS } from "../actions/Types";
+import {
+  GET_USER_INFO_SUCCESS,
+  LOGOUT_SUCCESS,
+  DATA_LOADED
+} from "../actions/Types";
 
 const initialState = {
   userInfo: []
 };
 
-const userReducer = (state = initialState, action) => {
+export const userReducer = (state = initialState, action) => {
   switch (action.type) {
     case GET_USER_INFO_SUCCESS:
       return (state = action.payload);
@@ -15,4 +19,15 @@ const userReducer = (state = initialState, action) => {
   }
 };
 
-export default userReducer;
+const initialDataLoaded = false;
+
+export const dataReducer = (state = initialDataLoaded, action) => {
+  switch (action.type) {
+    case DATA_LOADED:
+      return (state = action.payload);
+    case LOGOUT_SUCCESS:
+      return (state = initialDataLoaded);
+    default:
+      return state;
+  }
+};

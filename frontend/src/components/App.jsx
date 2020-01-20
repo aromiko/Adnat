@@ -5,8 +5,8 @@ import Login from "./Login";
 import Register from "./Register";
 import Home from "./Home";
 import { Router, Switch, Route, Redirect } from "react-router-dom";
-import { history } from "../ducks/History";
-import { PrivateRoute } from "../ducks/PrivateRoute";
+import { history } from "../ducks/helpers/History";
+import { PrivateRoute } from "../ducks/helpers/PrivateRoute";
 import { useSelector } from "react-redux";
 
 const theme = createMuiTheme({

@@ -5,14 +5,15 @@ import {
   inOrganizationReducer,
   editOrganizationReducer
 } from "./OrganizationReducer";
-import userReducer from "./UserReducer";
+import { userReducer, dataReducer } from "./UserReducer";
 
 const allReducers = combineReducers({
   auth: loginReducer,
   organization: organizationReducer,
   userInfo: userReducer,
   inOrganization: inOrganizationReducer,
-  editOrganizationId: editOrganizationReducer
+  editOrganizationId: editOrganizationReducer,
+  isDataLoaded: dataReducer
 });
 
 export default allReducers;
