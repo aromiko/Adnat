@@ -15,7 +15,11 @@ import {
 } from "@material-ui/core";
 import { useDispatch, useSelector } from "react-redux";
 import { setEditId } from "../ducks/actions/Actions";
-import { postOrganization, putOrganization } from "../ducks/actions/Api";
+import {
+  postOrganization,
+  putOrganization,
+  postJoinOrganization
+} from "../ducks/actions/Api";
 
 const useStyles = makeStyles(theme => ({
   mainHomeContainer: {
@@ -137,7 +141,7 @@ export default function CreateJoinOrganizations() {
                     variant="contained"
                     color="primary"
                     className={classes.editJoinButton}
-                    onClick={() => dispatch()}
+                    onClick={() => dispatch(postJoinOrganization(item.id))}
                   >
                     Join
                   </Button>

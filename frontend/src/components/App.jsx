@@ -30,7 +30,6 @@ function App() {
             <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
             <PrivateRoute exact path="/home" component={Home} auth={isLogged} />
-            {/* <Redirect from="*" to="/" /> */}
             <Redirect from="/" to="login" />
           </Switch>
         </Router>

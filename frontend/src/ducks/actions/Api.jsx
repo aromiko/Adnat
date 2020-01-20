@@ -134,6 +134,29 @@ export const putOrganization = (name, hourlyRate, id) => {
   };
 };
 
+export const postJoinOrganization = organisationId => {
+  return dispatch => {
+    return axios
+      .post(
+        `${apiUrl}/organisations/join`,
+        { organisationId },
+        {
+          headers: {
+            Authorization: state.auth.sessionId,
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      .then(() => {
+        dispatch(postOrganizationSuccess(true));
+        dispatch(getUserInfo());
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+};
+
 export const getOrganizations = () => {
   return dispatch => {
     return axios
