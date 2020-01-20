@@ -21,6 +21,19 @@ const useStyles = makeStyles(theme => ({
   },
   createButton: {
     color: "#fff"
+  },
+  gridContainer: {
+    marginTop: theme.spacing(4)
+  },
+  root: {
+    flexGrow: 1,
+    maxWidth: 752
+  },
+  demo: {
+    backgroundColor: theme.palette.background.paper
+  },
+  subtitle: {
+    margin: theme.spacing(4, 0, 2)
   }
 }));
 

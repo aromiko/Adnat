@@ -4,8 +4,10 @@ import { ThemeProvider } from "@material-ui/styles";
 import Login from "./Login";
 import Register from "./Register";
 import Home from "./Home";
-import { Router, Switch, Route } from "react-router-dom";
+import { Router, Switch, Route, Redirect } from "react-router-dom";
 import { history } from "../ducks/History";
+import { PrivateRoute } from "../ducks/PrivateRoute";
+import { useSelector } from "react-redux";
 
 const theme = createMuiTheme({
   palette: {
@@ -19,14 +21,16 @@ const theme = createMuiTheme({
 });
 
 function App() {
+  const isLogged = useSelector(state => state.auth.isLogged);
   return (
     <ThemeProvider theme={theme}>
       <div className="App">
         <Router history={history}>
           <Switch>
-            <Route path="/login" redirect component={Login} />
+            <Route path="/login" component={Login} />
             <Route path="/register" component={Register} />
-            <Route path="/home" component={Home} />
+            <PrivateRoute exact path="/home" component={Home} auth={isLogged} />
+            <Redirect from="*" to="/" />
           </Switch>
         </Router>
       </div>
