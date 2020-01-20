@@ -1,20 +1,36 @@
 import React from "react";
-import { Typography, makeStyles } from "@material-ui/core";
+import { makeStyles } from "@material-ui/core";
 import { useSelector } from "react-redux";
+import CreateJoinOrganizations from "./CreateJoinOrganizations";
 
 const useStyles = makeStyles(theme => ({
-  mainHomeContainer: {
-    marginTop: theme.spacing(6)
+  gridContainer: {
+    marginTop: theme.spacing(4)
+  },
+  root: {
+    flexGrow: 1,
+    maxWidth: 752
+  },
+  demo: {
+    backgroundColor: theme.palette.background.paper
+  },
+  subtitle: {
+    margin: theme.spacing(4, 0, 2)
   }
 }));
 
 export default function Organizations() {
-  const classes = useStyles();
-  const userName = useSelector(state => state.userInfo.name);
+  const inOrganization = useSelector(state => state.inOrganization);
 
   return (
-    <Typography variant="h5" gutterBottom>
-      Organizations
-    </Typography>
+    <div>
+      {!inOrganization ? (
+        <div>
+          <CreateJoinOrganizations />
+        </div>
+      ) : (
+        ""
+      )}
+    </div>
   );
 }

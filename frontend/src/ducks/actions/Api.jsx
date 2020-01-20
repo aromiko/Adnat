@@ -4,6 +4,8 @@ import {
   loginFailed,
   logoutSuccess,
   getUserInfoSuccess,
+  postOrganizationSuccess,
+  postOrganizationFailed,
   registerSuccess
 } from "./Actions";
 import store from "../Store";
@@ -41,7 +43,7 @@ export const logout = () => {
           Authorization: state.auth.sessionId
         }
       })
-      .then(response => {
+      .then(() => {
         dispatch(logoutSuccess());
         history.push("./login");
       })
@@ -70,10 +72,37 @@ export const register = (name, email, password, passwordConfirmation) => {
       )
       .then(response => {
         dispatch(registerSuccess());
-        history.push("./login");
+        dispatch(loginSuccess(response.data.sessionId, true));
+        dispatch(getUserInfo());
+        history.push("./home");
       })
       .catch(error => {
         dispatch(loginFailed());
+        throw error;
+      });
+  };
+};
+
+export const postOrganization = (name, hourlyRate) => {
+  return dispatch => {
+    return axios
+      .post(
+        `${apiUrl}/organisations/create_join`,
+        { name, hourlyRate },
+        {
+          headers: {
+            Authorization: state.auth.sessionId,
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      .then(() => {
+        dispatch(postOrganizationSuccess(true));
+        dispatch(getOrganizations());
+        dispatch(getUserInfo());
+      })
+      .catch(error => {
+        dispatch(postOrganizationFailed());
         throw error;
       });
   };
@@ -108,6 +137,11 @@ export const getUserInfo = () => {
       })
       .then(response => {
         dispatch(getUserInfoSuccess(response.data));
+        dispatch(postOrganizationSuccess(true));
+        if (!response.data.organisationId) {
+          dispatch(postOrganizationSuccess(false));
+          dispatch(getOrganizations());
+        }
       })
       .catch(error => {
         throw error;

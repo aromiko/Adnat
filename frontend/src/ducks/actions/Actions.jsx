@@ -4,7 +4,9 @@ import {
   LOGIN_FAILED,
   LOGOUT_SUCCESS,
   GET_USER_INFO_SUCCESS,
-  REGISTER_SUCCESS
+  REGISTER_SUCCESS,
+  POST_ORGANIZATION_SUCCESS,
+  POST_ORGANIZATION_FAILED
 } from "./Types";
 
 export const getOrganizationsSuccess = response => {
@@ -37,6 +39,14 @@ export const registerSuccess = () => {
   return {
     type: REGISTER_SUCCESS
   };
+};
+
+export const postOrganizationSuccess = inOrganization => {
+  return { type: POST_ORGANIZATION_SUCCESS, payload: inOrganization };
+};
+
+export const postOrganizationFailed = () => {
+  return { type: POST_ORGANIZATION_FAILED };
 };
 
 export const getUserInfoSuccess = response => {

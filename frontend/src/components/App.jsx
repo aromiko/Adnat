@@ -24,7 +24,7 @@ function App() {
       <div className="App">
         <Router history={history}>
           <Switch>
-            <Route path="/login" component={Login} />
+            <Route path="/login" redirect component={Login} />
             <Route path="/register" component={Register} />
             <Route path="/home" component={Home} />
           </Switch>
