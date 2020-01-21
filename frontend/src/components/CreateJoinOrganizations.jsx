@@ -125,29 +125,35 @@ export default function CreateJoinOrganizations() {
         <Grid item xs={12} md={6}>
           <Typography variant="h5">Organizations</Typography>
           <div className={classes.demo}>
-            <List>
-              {organizations.map(item => (
-                <ListItem key={item.id}>
-                  <ListItemText primary={item.name} />
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.editJoinButton}
-                    onClick={() => handleEdit(item.id)}
-                  >
-                    Edit
-                  </Button>
-                  <Button
-                    variant="contained"
-                    color="primary"
-                    className={classes.editJoinButton}
-                    onClick={() => dispatch(postJoinOrganization(item.id))}
-                  >
-                    Join
-                  </Button>
-                </ListItem>
-              ))}
-            </List>
+            {organizations.length === 0 ? (
+              <Typography variant="body1" gutterBottom>
+                No Organizations available. Create a new one!
+              </Typography>
+            ) : (
+              <List>
+                {organizations.map(item => (
+                  <ListItem key={item.id}>
+                    <ListItemText primary={item.name} />
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.editJoinButton}
+                      onClick={() => handleEdit(item.id)}
+                    >
+                      Edit
+                    </Button>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className={classes.editJoinButton}
+                      onClick={() => dispatch(postJoinOrganization(item.id))}
+                    >
+                      Join
+                    </Button>
+                  </ListItem>
+                ))}
+              </List>
+            )}
           </div>
         </Grid>
         <Grid item xs={12} md={6}>

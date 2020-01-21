@@ -5,8 +5,11 @@ import {
   loginSuccess,
   loginFailed,
   logoutSuccess,
+  getShiftsSuccess,
   getUserInfoSuccess,
   postOrganizationSuccess,
+  getOrganizationsUsersSuccess,
+  getOrganizationsByIdSuccess,
   postOrganizationFailed,
   registerSuccess,
   putOrganizationSuccess,
@@ -201,6 +204,60 @@ export const getOrganizations = () => {
   };
 };
 
+export const getOrganizationsById = id => {
+  return dispatch => {
+    return axios
+      .get(`${apiUrl}/organisations/${id}`, {
+        headers: {
+          Authorization: state.auth.sessionId,
+          "Content-Type": "application/json"
+        }
+      })
+      .then(response => {
+        dispatch(getOrganizationsByIdSuccess(response.data));
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+};
+
+export const getShifts = () => {
+  return dispatch => {
+    return axios
+      .get(`${apiUrl}/shifts`, {
+        headers: {
+          Authorization: state.auth.sessionId,
+          "Content-Type": "application/json"
+        }
+      })
+      .then(response => {
+        dispatch(getShiftsSuccess(response.data));
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+};
+
+export const getOrganizationUsers = () => {
+  return dispatch => {
+    return axios
+      .get(`${apiUrl}/users`, {
+        headers: {
+          Authorization: state.auth.sessionId,
+          "Content-Type": "application/json"
+        }
+      })
+      .then(response => {
+        dispatch(getOrganizationsUsersSuccess(response.data));
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+};
+
 export const getUserInfo = () => {
   return dispatch => {
     return axios
@@ -214,12 +271,16 @@ export const getUserInfo = () => {
         dispatch(getUserInfoSuccess(response.data));
         if (response.data.organisationId) {
           dispatch(postOrganizationSuccess(true));
-          dispatch(dataLoaded(true));
+          dispatch(getOrganizationsById(response.data.organisationId));
+          dispatch(getOrganizationUsers());
+          dispatch(getShifts());
         } else {
           dispatch(getOrganizations());
           dispatch(postOrganizationSuccess(false));
-          dispatch(dataLoaded(true));
         }
+      })
+      .then(response => {
+        dispatch(dataLoaded(true));
       })
       .catch(error => {
         throw error;

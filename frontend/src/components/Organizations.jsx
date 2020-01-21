@@ -5,10 +5,11 @@ import MainOrganization from "./MainOrganization";
 
 export default function Organizations() {
   const inOrganization = useSelector(state => state.inOrganization);
+  const isDataLoaded = useSelector(state => state.isDataLoaded);
 
-  if (inOrganization) {
+  if (inOrganization && isDataLoaded) {
     return <MainOrganization />;
-  } else {
+  } else if (!inOrganization && isDataLoaded) {
     return <CreateJoinOrganizations />;
   }
 }

@@ -1,6 +1,7 @@
 import {
   GET_ORGANIZATIONS_SUCCESS,
   GET_ORGANIZATIONS_FAILED,
+  GET_ORGANIZATION_BY_ID_SUCCESS,
   POST_ORGANIZATION_SUCCESS,
   POST_LEAVE_ORGANIZATION_SUCCESS,
   LOGOUT_SUCCESS,
@@ -8,6 +9,9 @@ import {
 } from "../actions/Types";
 
 const initialOrganizationState = [];
+const initialInOrganizationState = false;
+const initialEditOrganizationState = 0;
+const initialOrganizationJoinedState = [];
 
 export const organizationReducer = (
   state = initialOrganizationState,
@@ -25,8 +29,6 @@ export const organizationReducer = (
   }
 };
 
-const initialInOrganizationState = false;
-
 export const inOrganizationReducer = (
   state = initialInOrganizationState,
   action
@@ -43,8 +45,6 @@ export const inOrganizationReducer = (
   }
 };
 
-const initialEditOrganizationState = 0;
-
 export const editOrganizationReducer = (
   state = initialEditOrganizationState,
   action
@@ -52,6 +52,20 @@ export const editOrganizationReducer = (
   switch (action.type) {
     case SET_EDIT_ID:
       return (state = action.payload);
+    default:
+      return state;
+  }
+};
+
+export const organizationJoinedReducer = (
+  state = initialOrganizationJoinedState,
+  action
+) => {
+  switch (action.type) {
+    case GET_ORGANIZATION_BY_ID_SUCCESS:
+      return (state = action.payload);
+    case LOGOUT_SUCCESS:
+      return (state = initialOrganizationJoinedState);
     default:
       return state;
   }

@@ -3,9 +3,11 @@ import loginReducer from "./AuthReducer";
 import {
   organizationReducer,
   inOrganizationReducer,
-  editOrganizationReducer
+  editOrganizationReducer,
+  organizationJoinedReducer
 } from "./OrganizationReducer";
-import { userReducer, dataReducer } from "./UserReducer";
+import { userReducer, dataReducer, orgUserReducer } from "./UserReducer";
+import { shiftsReducer } from "./ShiftsReducer";
 
 const allReducers = combineReducers({
   auth: loginReducer,
@@ -13,7 +15,10 @@ const allReducers = combineReducers({
   userInfo: userReducer,
   inOrganization: inOrganizationReducer,
   editOrganizationId: editOrganizationReducer,
-  isDataLoaded: dataReducer
+  isDataLoaded: dataReducer,
+  shifts: shiftsReducer,
+  orgUsers: orgUserReducer,
+  orgJoined: organizationJoinedReducer
 });
 
 export default allReducers;

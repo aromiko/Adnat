@@ -1,7 +1,10 @@
 import {
   DATA_LOADED,
   GET_ORGANIZATIONS_SUCCESS,
+  GET_SHIFTS_SUCCESS,
   GET_USER_INFO_SUCCESS,
+  GET_ORGANIZATION_USERS_SUCCESS,
+  GET_ORGANIZATION_BY_ID_SUCCESS,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
   LOGOUT_SUCCESS,
@@ -79,4 +82,16 @@ export const dataLoaded = loaded => {
 
 export const leaveOrganization = () => {
   return { type: POST_LEAVE_ORGANIZATION_SUCCESS };
+};
+
+export const getShiftsSuccess = shifts => {
+  return { type: GET_SHIFTS_SUCCESS, payload: shifts };
+};
+
+export const getOrganizationsUsersSuccess = users => {
+  return { type: GET_ORGANIZATION_USERS_SUCCESS, payload: users };
+};
+
+export const getOrganizationsByIdSuccess = organizationJoined => {
+  return { type: GET_ORGANIZATION_BY_ID_SUCCESS, payload: organizationJoined };
 };

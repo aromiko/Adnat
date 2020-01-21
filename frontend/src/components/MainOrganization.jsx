@@ -12,11 +12,15 @@ import {
   makeStyles
 } from "@material-ui/core";
 import { putOrganization, postLeaveOrganization } from "../ducks/actions/Api";
+import Shifts from "./Shifts";
 
 const useStyles = makeStyles(theme => ({
   editLeaveButton: {
     color: "#fff",
     margin: theme.spacing(1)
+  },
+  shiftsContainer: {
+    marginTop: theme.spacing(4)
   }
 }));
 
@@ -40,12 +44,7 @@ export default function MainOrganization() {
   const dispatch = useDispatch();
   const dataLoaded = useSelector(state => state.isDataLoaded);
   const organizationId = useSelector(state => state.userInfo.organisationId);
-  const organizationIndex = useSelector(state => state.organization).findIndex(
-    org => org.id === organizationId
-  );
-  const organizationName = useSelector(
-    state => state.organization[organizationIndex].name
-  );
+  const organizationName = useSelector(state => state.orgJoined.name);
   const [open, setOpen] = React.useState(false);
 
   const {
@@ -80,7 +79,7 @@ export default function MainOrganization() {
       Your organization:
       <Grid container alignItems="center">
         <Grid item>
-          <Typography variant="h4">
+          <Typography variant="h5">
             {dataLoaded ? organizationName : ""}
           </Typography>
         </Grid>
@@ -105,6 +104,9 @@ export default function MainOrganization() {
           </Button>
         </Grid>
       </Grid>
+      <div className={classes.shiftsContainer}>
+        <Shifts />
+      </div>
       <Dialog
         open={open}
         onClose={handleClose}

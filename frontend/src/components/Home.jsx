@@ -17,12 +17,16 @@ export default function Home() {
   return (
     <div>
       <Header></Header>
-      <Container maxWidth="lg" className={classes.mainHomeContainer}>
-        <Typography variant="h2" gutterBottom>
-          Welcome {userName}!
-        </Typography>
-        {dataLoaded ? <Organizations /> : ""}
-      </Container>
+      {dataLoaded ? (
+        <Container maxWidth="lg" className={classes.mainHomeContainer}>
+          <Typography variant="h2" gutterBottom>
+            Welcome {userName}!
+          </Typography>
+          <Organizations />
+        </Container>
+      ) : (
+        ""
+      )}
     </div>
   );
 }
