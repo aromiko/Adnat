@@ -5,7 +5,7 @@
   "scripts": {
     "backend:start": "cd backend && node index.js",
     "backend:setup": "cd backend && yarn install",
-    "frontend:start": "cd frontend && react-scripts start",
+    "frontend:start": "cd frontend && yarn start",
     "frontend:setup": "cd frontend && yarn install"
   }
 }
