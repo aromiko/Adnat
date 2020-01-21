@@ -89,6 +89,29 @@ router.post("/leave", (req, res) => {
   ).then(() => res.sendStatus(200));
 });
 
+router.get("/:id", (req, res) =>
+  DB.get(
+    "SELECT organisations.* FROM organisations WHERE organisations.id = ?",
+    req.params.id
+  )
+    .then(orgs => {
+      if (!orgs) {
+        throw { statusCode: 404 };
+      }
+      res.json({
+        id: orgs.id,
+        name: orgs.name,
+        hourlyRate: orgs.hourly_rate
+      });
+    })
+    .catch(err => {
+      if (err && err.statusCode) {
+        return res.status(err.statusCode).json({ error: err.error });
+      }
+      throw err;
+    })
+);
+
 router.put("/:id", (req, res) => {
   DB.get(
     "SELECT organisations.* FROM organisations WHERE organisations.id = ?",
