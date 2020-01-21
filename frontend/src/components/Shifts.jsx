@@ -41,6 +41,7 @@ export default function Shifts() {
   const userName = useSelector(state => state.userInfo.name);
   const orgUsers = useSelector(state => state.orgUsers);
   const shifts = useSelector(state => state.shifts);
+  const hourlyRate = useSelector(state => state.orgJoined.hourlyRate);
 
   const [selectedDate, setSelectedDate] = React.useState(new Date());
   const [pickedStartTime, setPickedStartTime] = React.useState(new Date());
@@ -60,9 +61,7 @@ export default function Shifts() {
 
   const formatDateTime = (date, time) => {
     return (
-      moment(selectedDate).format("YYYY-MM-DD") +
-      " " +
-      moment(pickedStartTime).format("HH:mm")
+      moment(date).format("YYYY-MM-DD") + " " + moment(time).format("HH:mm")
     );
   };
 
@@ -84,6 +83,22 @@ export default function Shifts() {
         }
       }
     };
+  };
+
+  const calculateHoursWorked = (startTime, endTime, breakTime) => {
+    const timeWorked = moment(endTime, "YYYY-MM-DD HH:mm").diff(
+      moment(startTime, "YYYY-MM-DD HH:mm")
+    );
+    const totalTimeWorked = timeWorked - breakTime * 60000;
+    const tempTime = moment.duration(totalTimeWorked);
+    const hours = tempTime.hours();
+    const minutes = tempTime.minutes() / 60;
+    return hours + "." + Math.round(minutes * 100);
+  };
+
+  const ShiftCost = hoursWorked => {
+    const shiftCost = hoursWorked * hourlyRate;
+    return Math.round(shiftCost * 100) / 100;
   };
 
   const {
@@ -133,10 +148,25 @@ export default function Shifts() {
                   <TableCell>{formatShiftTableTime(row.start)}</TableCell>
                   <TableCell>{formatShiftTableTime(row.finish)}</TableCell>
                   <TableCell>
-                    {row.breakLength != "" ? row.breakLength : "N/A"}
+                    {row.breakLength !== "" ? row.breakLength : "0"}
                   </TableCell>
-                  <TableCell></TableCell>
-                  <TableCell></TableCell>
+                  <TableCell>
+                    {calculateHoursWorked(
+                      row.start,
+                      row.finish,
+                      row.breakLength
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    $
+                    {ShiftCost(
+                      calculateHoursWorked(
+                        row.start,
+                        row.finish,
+                        row.breakLength
+                      )
+                    )}
+                  </TableCell>
                 </TableRow>
               ))}
             </TableBody>
