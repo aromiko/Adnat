@@ -131,16 +131,15 @@ router.delete("/:id", (req, res) => {
   }
 
   DB.get(
-    "SELECT shifts.* FROM shifts INNER JOIN users ON shifts.user_id = users.id WHERE users.organisation_id = ? AND shifts.id = ?",
-    req.user.organisation_id,
-    req.params.id
+    "SELECT shifts.* FROM shifts INNER JOIN users ON shifts.user_id = users.id WHERE users.organisation_id = ?",
+    req.user.organisation_id
   )
     .then(shift => {
       if (!shift) {
         throw { statusCode: 404, error: "No known shift with that ID" };
       }
 
-      return DB.run("DELETE FROM shifts WHERE id = ?", shift.id);
+      return DB.run("DELETE FROM shifts WHERE user_id = ?", req.params.id);
     })
     .then(() => res.sendStatus(200))
     .catch(err => {

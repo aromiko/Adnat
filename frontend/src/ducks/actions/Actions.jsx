@@ -5,6 +5,7 @@ import {
   GET_USER_INFO_SUCCESS,
   GET_ORGANIZATION_USERS_SUCCESS,
   GET_ORGANIZATION_BY_ID_SUCCESS,
+  DELETE_SHIFT_SUCCESS,
   LOGIN_SUCCESS,
   LOGIN_FAILED,
   LOGOUT_SUCCESS,
@@ -12,6 +13,7 @@ import {
   POST_ORGANIZATION_SUCCESS,
   POST_ORGANIZATION_FAILED,
   POST_LEAVE_ORGANIZATION_SUCCESS,
+  POST_SHIFT_SUCCESS,
   PUT_ORGANIZATION_SUCCESS,
   PUT_ORGANIZATION_FAILED,
   SET_EDIT_ID
@@ -94,4 +96,12 @@ export const getOrganizationsUsersSuccess = users => {
 
 export const getOrganizationsByIdSuccess = organizationJoined => {
   return { type: GET_ORGANIZATION_BY_ID_SUCCESS, payload: organizationJoined };
+};
+
+export const postShiftSuccess = () => {
+  return { type: POST_SHIFT_SUCCESS };
+};
+
+export const deleteShiftsSuccess = () => {
+  return { type: DELETE_SHIFT_SUCCESS };
 };

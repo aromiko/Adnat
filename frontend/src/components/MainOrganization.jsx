@@ -11,7 +11,11 @@ import {
   Typography,
   makeStyles
 } from "@material-ui/core";
-import { putOrganization, postLeaveOrganization } from "../ducks/actions/Api";
+import {
+  putOrganization,
+  postLeaveOrganization,
+  deleteShifts
+} from "../ducks/actions/Api";
 import Shifts from "./Shifts";
 
 const useStyles = makeStyles(theme => ({
@@ -42,6 +46,7 @@ export default function MainOrganization() {
   };
   const classes = useStyles();
   const dispatch = useDispatch();
+  const userId = useSelector(state => state.userInfo.id);
   const dataLoaded = useSelector(state => state.isDataLoaded);
   const organizationId = useSelector(state => state.userInfo.organisationId);
   const organizationName = useSelector(state => state.orgJoined.name);
@@ -98,7 +103,11 @@ export default function MainOrganization() {
             variant="contained"
             color="primary"
             className={classes.editLeaveButton}
-            onClick={() => dispatch(postLeaveOrganization())}
+            onClick={() =>
+              dispatch(deleteShifts(userId)).then(
+                dispatch(postLeaveOrganization())
+              )
+            }
           >
             Leave
           </Button>

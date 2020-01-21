@@ -5,6 +5,8 @@ import {
   loginSuccess,
   loginFailed,
   logoutSuccess,
+  postShiftSuccess,
+  deleteShiftsSuccess,
   getShiftsSuccess,
   getUserInfoSuccess,
   postOrganizationSuccess,
@@ -222,6 +224,29 @@ export const getOrganizationsById = id => {
   };
 };
 
+export const postShift = (userId, start, finish, breakLength) => {
+  return dispatch => {
+    return axios
+      .post(
+        `${apiUrl}/shifts`,
+        { userId, start, finish, breakLength },
+        {
+          headers: {
+            Authorization: state.auth.sessionId,
+            "Content-Type": "application/json"
+          }
+        }
+      )
+      .then(() => {
+        dispatch(postShiftSuccess());
+        dispatch(getShifts());
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+};
+
 export const getShifts = () => {
   return dispatch => {
     return axios
@@ -233,6 +258,23 @@ export const getShifts = () => {
       })
       .then(response => {
         dispatch(getShiftsSuccess(response.data));
+      })
+      .catch(error => {
+        throw error;
+      });
+  };
+};
+
+export const deleteShifts = userId => {
+  return dispatch => {
+    return axios
+      .delete(`${apiUrl}/shifts/${userId}`, {
+        headers: {
+          Authorization: state.auth.sessionId
+        }
+      })
+      .then(() => {
+        dispatch(deleteShiftsSuccess());
       })
       .catch(error => {
         throw error;
