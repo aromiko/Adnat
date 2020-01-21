@@ -134,6 +134,8 @@ export const putOrganization = (name, hourlyRate, id) => {
       )
       .then(() => {
         dispatch(putOrganizationSuccess());
+        dispatch(getOrganizationsById(id));
+        dispatch(getShifts());
         dispatch(getOrganizations());
       })
       .catch(error => {
